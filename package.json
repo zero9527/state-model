@@ -4,10 +4,14 @@
   "main": "dist/zr-model.esm.js",
   "umd": "dist/zr-model.umd.js",
   "typings": "typings/index.d.ts",
+  "description": "A Single State Manage",
+  "repository": {
+    "url": "https://github.com/zero9527/zr-model"
+  },
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "node ./__test/test.js",
+    "test": "node ./__test/index.js",
     "pretest": "npm run build"
   },
   "devDependencies": {
