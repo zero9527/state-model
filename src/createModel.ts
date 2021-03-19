@@ -1,5 +1,11 @@
-import { ModelState } from "./types/index.d";
-import { ModelHandler, UseModel } from "./types/index";
+import _onChange from "./utils/onChange";
+import { CallbackKey } from './utils/const';
+import {
+  ModelState, 
+  ModelHandler, 
+  UseModel, 
+  OnChange,
+} from "./types/index";
 
 /**
  * model包装器
@@ -9,12 +15,28 @@ import { ModelHandler, UseModel } from "./types/index";
 export function createModel<Returns>(useModel: UseModel<Returns>) {
   const modelState: ModelState = {
     data: null,
+    callbackLists: [], // TODO: 重复注册的问题
   };
 
-  const handler: ModelHandler<Returns> = (props) => {
-    const stateData = useModel(props || {}) as any;
+  /**
+   * 给useModel在修改state的时候调用的
+   * @param key 
+   * @param value 
+   */
+  function onChange (key: string, value: any) {
+    _onChange(modelState.callbackLists, key, value);
+  }
+
+  /**
+   * 默认createModel返回的函数
+   * @param props 
+   * @returns 
+   */
+  const handler: ModelHandler<Returns> = (props = {}) => {
+    const stateData = useModel.call(null, { onChange, props }) as any;
     if (!modelState.data) {
       modelState.data = stateData;
+      modelState.callbackLists = [];
     } else {
       Object.keys(stateData).forEach((key) => {
         modelState.data![key] = stateData[key];
@@ -22,6 +44,15 @@ export function createModel<Returns>(useModel: UseModel<Returns>) {
     }
     return modelState.data;
   };
+
+  // 状态变更的通知
+  handler.onStateChange = onStateChange;
+  function onStateChange(callback: OnChange, key?: string) {
+    const _key = key || CallbackKey.COMMON;
+    modelState.callbackLists.push({
+      [_key]: callback,
+    });
+  }
 
   // 通过 `.data` 的方式访问
   Object.defineProperty(handler, "data", {
