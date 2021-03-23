@@ -1,6 +1,6 @@
 {
   "name": "@zr/model",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/zr-model.esm.js",
   "umd": "dist/zr-model.umd.js",
   "typings": "typings/index.d.ts",

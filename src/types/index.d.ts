@@ -5,12 +5,19 @@ export interface UseModel<R> {
   (props: any): R;
 }
 
+/**
+ * 自定义model在setState调的辅助函数
+ */
 export interface OnChange {
   (key: string, value: any): void;
 }
 
+/**
+ * stateChange 的回调函数相关
+ */
 export interface CallbackItem {
-  [key: string]: OnChange;
+  deps: string[];
+  callback: OnChange;
 }
 
 /**
@@ -28,5 +35,6 @@ export interface ModelHandler<R> {
   // (params?: { props?: any, keys?: (keyof R)[] }): R;
   (props?: any): R;
   data?: R,
-  onStateChange?: (callback: OnChange, key?: string) => void;
+  clear?: () => void;
+  onStateChange?: (callback: OnChange, deps?: string[]) => void;
 }

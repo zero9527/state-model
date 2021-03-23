@@ -1,5 +1,4 @@
 import _onChange from "./utils/onChange";
-import { CallbackKey } from './utils/const';
 import {
   ModelState, 
   ModelHandler, 
@@ -13,6 +12,7 @@ import {
  * @returns
  */
 export function createModel<Returns>(useModel: UseModel<Returns>) {
+  let initStateData = {};
   const modelState: ModelState = {
     data: null,
     callbackLists: [], // TODO: 重复注册的问题
@@ -35,6 +35,7 @@ export function createModel<Returns>(useModel: UseModel<Returns>) {
   const handler: ModelHandler<Returns> = (props = {}) => {
     const stateData = useModel.call(null, { onChange, props }) as any;
     if (!modelState.data) {
+      initStateData = stateData;
       modelState.data = stateData;
       modelState.callbackLists = [];
     } else {
@@ -45,13 +46,22 @@ export function createModel<Returns>(useModel: UseModel<Returns>) {
     return modelState.data;
   };
 
+  // 初始化数据
+  handler.clear = function clear () {
+    modelState.data.state = {};
+    modelState.callbackLists.length = 0;
+  }
+  
   // 状态变更的通知
-  handler.onStateChange = onStateChange;
-  function onStateChange(callback: OnChange, key?: string) {
-    const _key = key || CallbackKey.COMMON;
-    modelState.callbackLists.push({
-      [_key]: callback,
-    });
+  handler.onStateChange = function onStateChange(callback: OnChange, deps: string[] = []) {
+    const hasDep = Object.keys(modelState.data.state).some(key => deps.includes(key));
+    if (hasDep || !deps?.length) {
+      modelState.callbackLists.push({ deps, callback });
+    } else {
+      console.warn(`[onStateChange]WARN: 请检查[deps]: ${
+        JSON.stringify(deps)
+      }是否存在state中! state:`, modelState.data.state);
+    }
   }
 
   // 通过 `.data` 的方式访问

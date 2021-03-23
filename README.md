@@ -6,9 +6,26 @@
 
 
 ## Api
-- createModel
-- onStateChange(`TODO`)
+- `onChange`: 自定义 `model` 在 `setState` 的时候调用
+- `createModel`: 自定义 `model` 的外出容器
+- `onStateChange`(`beta`): 自定义监听 `onChange` 的回调
 
+
+## onChange
+如: 
+```js
+function useCountModel({ onChange }) {
+  const state = {
+    count: 0,
+  };
+
+  function setCount(count) {
+    state.count = count;
+    onChange('count', count);
+  }
+  // ...
+}
+```
 
 ## createModel
 创建 `Model` 的包装器
@@ -17,25 +34,24 @@
 ### 编写自定义 `Model`
 
 ```ts
-import { createModel } from "../src";
+// __test/useCountModel.js
+const zrModel = require("../dist/zr-model.umd.js");
 
-interface UseModelState {
-  count: number;
-}
+const { createModel } = zrModel;
 
 /**
- * 定义Model
- * @param props
- * @returns
+ * useCountModel
+ * @param {*} param0 
+ * @returns 
  */
-function useTestModel(props: any) {
-  const state: UseModelState = {
-    ...props,
+function useCountModel({ onChange }) {
+  const state = {
     count: 0,
   };
 
-  function setCount(count: number) {
+  function setCount(count) {
     state.count = count;
+    onChange('count', count);
   }
 
   return {
@@ -44,7 +60,7 @@ function useTestModel(props: any) {
   };
 }
 
-export default createModel(useTestModel);
+module.exports = createModel(useCountModel);
 ```
 
 ### 使用自定义 `Model`
@@ -67,21 +83,34 @@ console.log(testModel.state.count); // 6
 console.log(useTestModel.data.state.count); // 6
 ```
 
+## props
+自定义 `model` 接收的外部参数
+
+> TODO，出来多次调用自定义 `model` 的 `props` 覆盖/合并问题
+
 
 ## onStateChange
-> TODO
+> v0.1.1(beta)
 
-状态更新的监听
+状态更新的监听，需要在自定义 `model` 内 setState 的时候调用一次 `onChange` 方法
+
+
+参数 `params`
+- callback: `(key: string, value: any): void;`
+- deps: `string[]`
 
 ```ts
-const testModel = useTestModel();
-console.log(testModel.state.count); // 0
+const countModel = useCountModel();
+console.log(countModel.state.count); // 0
 
-testModel.setCount(6);
-
-testModel.onStateChange((key, value) => {
+  // 调用下面 setCount 之后执行回调函数
+useCountModel.onStateChange((key, value) => {
   console.log(key, value); // 'count', 6
 }, ['count']);
+
+countModel.setCount(6);
+console.log(countModel.state.count); // 6
+console.log(useCountModel.data.state.count); // 6
 ```
 
 

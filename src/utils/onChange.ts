@@ -1,4 +1,3 @@
-import { CallbackKey } from './const';
 import { CallbackItem } from '../types/index';
 
 /**
@@ -9,7 +8,9 @@ import { CallbackItem } from '../types/index';
  */
 export default function onChange (callbackLists: CallbackItem[], key: string, value: any) {
   callbackLists.forEach(item => {
-    const callback = item[key] || item[CallbackKey.COMMON];
-    if (callback) callback(key, value);
+    const emptyDeps = !item.deps.length;
+    const includeDep = item.deps.some(dep => dep === key);
+    const shouldCallback = emptyDeps || includeDep;
+    if (shouldCallback) item.callback(key, value);
   });
 }

@@ -5,6 +5,9 @@ interface UseModel<R> {
   (props: any): R;
 }
 
+/**
+ * 自定义model在setState调的辅助函数
+ */
 interface OnChange {
   (key: string, value: any): void;
 }
@@ -16,7 +19,8 @@ interface ModelHandler<R> {
   // (params?: { props?: any, keys?: (keyof R)[] }): R;
   (props?: any): R;
   data?: R,
-  onStateChange?: (callback: OnChange, key?: string) => void;
+  clear?: () => void;
+  onStateChange?: (callback: OnChange, deps?: string[]) => void;
 }
 
 /**

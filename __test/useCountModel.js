@@ -3,18 +3,18 @@ const zrModel = require("../dist/zr-model.umd.js");
 const { createModel } = zrModel;
 
 /**
- * 定义Model
- * @param props
- * @returns
+ * useCountModel
+ * @param {*} param0 
+ * @returns 
  */
-function useTestModel(props) {
+function useCountModel({ onChange }) {
   const state = {
-    ...props,
     count: 0,
   };
 
   function setCount(count) {
     state.count = count;
+    onChange('count', count);
   }
 
   return {
@@ -23,4 +23,4 @@ function useTestModel(props) {
   };
 }
 
-module.exports = createModel(useTestModel);
+module.exports = createModel(useCountModel);
