@@ -13,7 +13,6 @@ function useDateModel({ onChange }) {
   };
 
   function setDate(date) {
-    state.date = date;
     onChange('date', date);
   }
 

@@ -12,12 +12,12 @@ useCountModel.onStateChange((key, value) => {
 
 // onStateChange
 useDateModel.onStateChange((key, value) => {
-  console.log(`useCountModel []`, key, value);
+  console.log(`useDateModel []`, key, value);
 }, []);
 
 // onStateChange
 useCountModel.onStateChange((key, value) => {
-  // console.log(`useCountModel ['count']`, key, value);
+  console.log(`useCountModel ['count']`, key, value);
   assert.strictEqual(key, 'count');
   assert.strictEqual(value, countModel.state.count);
   assert.strictEqual(value, useCountModel.data.state.count);
@@ -25,7 +25,7 @@ useCountModel.onStateChange((key, value) => {
 
 // onStateChange
 useDateModel.onStateChange((key, value) => {
-  // console.log(`useDateModel ['date']`, key, value);
+  console.log(`useDateModel ['date']`, key, value);
 }, ['date']);
 
 // onStateChange
@@ -38,6 +38,7 @@ useDateModel.onStateChange((key, value) => {
 
 // test
 function stateTest() {
+  countModel.state.count = 1; // 不能被直接修改
   assert.strictEqual(countModel.state.count, 0);
   assert.strictEqual(useCountModel.data.state.count, 0);
 

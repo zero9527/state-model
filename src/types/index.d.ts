@@ -1,8 +1,8 @@
 /**
  * 自定义Model
  */
-export interface UseModel<R> {
-  (props: any): R;
+export interface UseModel {
+  (props: { onChange: OnChange }): infer R;
 }
 
 /**
@@ -16,8 +16,8 @@ export interface OnChange {
  * stateChange 的回调函数相关
  */
 export interface CallbackItem {
-  deps: string[];
   callback: OnChange;
+  deps: string[];
 }
 
 /**

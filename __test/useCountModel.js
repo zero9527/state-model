@@ -13,7 +13,6 @@ function useCountModel({ onChange }) {
   };
 
   function setCount(count) {
-    state.count = count;
     onChange('count', count);
   }
 
