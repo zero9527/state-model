@@ -1,8 +1,8 @@
 /**
  * 自定义Model
  */
-interface UseModel {
-  (props: { onChange: OnChange }): infer R;
+ interface UseModel<R> {
+  (props: any): R;
 }
 
 /**
@@ -28,6 +28,6 @@ interface ModelHandler<R> {
  * @param fn
  * @returns
  */
-declare function createModel(useModel: UseModel): ModelHandler<ReturnType<UseModel>>;
+declare function createModel<Returns>(useModel: UseModel<Returns>): ModelHandler<Returns>;
 
 export { createModel };

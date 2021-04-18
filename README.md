@@ -1,14 +1,31 @@
 # zr-model
 
-一个无框架依赖、非集中式的状态管理；
+一个无框架依赖、非集中式的状态管理
 
-支持**单独**多处引入，状态**不需要**作为参数传递；
+- 支持**单独**多处引入
+- 可以接收外部参数（仅第一次传入有效）
+- 状态**不需要**作为参数传递
 
+> 注：框架支持，可在编写`自定义Model`时，手动支持（见下文**Vue的响应式**支持）
 
 ## 1、Api
 ### `createModel`
   
 自定义 `model` 的包装器
+
+### `props`
+
+使用 `自定义Model` 时传入的外部参数
+
+> 注意：props 只会在第一次传入的时候生效
+
+```js
+// 第一次传入是 { a: 'a' }
+const countModel = useCountModel({ a: 'a' });
+
+// 第二次传入，无效，此时 useCountModel 内部的props参数仍然是第一次传入的 { a: 'a' }
+const countModel2 = useCountModel({ a: 'aaaa' });
+```
 
 ### `onChange`
   
@@ -57,7 +74,7 @@ const { createModel } = zrModel;
  * @param {*} param0 
  * @returns 
  */
-function useCountModel({ onChange }) {
+function useCountModel({ props, onChange }) {
   const state = {
     count: 0,
   };

@@ -6,7 +6,7 @@ import { CallbackItem } from '../types/index';
  * @param key 
  * @param value 
  */
-export default function onChange (callbackLists: CallbackItem[], key: string, value: any) {
+export function onChange (callbackLists: CallbackItem[], key: string, value: any) {
   callbackLists.forEach(item => {
     const emptyDeps = !item.deps.length;
     const includeDep = item.deps.some(dep => dep === key);

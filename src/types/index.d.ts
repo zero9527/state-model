@@ -1,8 +1,8 @@
 /**
  * 自定义Model
  */
-export interface UseModel {
-  (props: { onChange: OnChange }): infer R;
+ export interface UseModel<R> {
+  (props: any): R;
 }
 
 /**
@@ -26,6 +26,13 @@ export interface CallbackItem {
 export interface ModelState {
   data: any;
   callbackLists: CallbackItem[];
+}
+
+/**
+ * 备份的state
+ */
+export interface CopyState {
+  [prop: string]: any;
 }
 
 /**

@@ -3,6 +3,7 @@ const useCountModel = require('./useCountModel');
 const useDateModel = require('./useDateModel');
 
 const countModel = useCountModel();
+// const countModel2 = useCountModel({ a: 'aaaa' });
 const dateModel = useDateModel();
 
 // onStateChange
