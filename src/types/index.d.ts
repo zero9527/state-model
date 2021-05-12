@@ -9,7 +9,7 @@
  * 自定义model在setState调的辅助函数
  */
 export interface OnChange {
-  (key: string, value: any): void;
+  (params: { key: string, value: any, params: any }): void;
 }
 
 /**

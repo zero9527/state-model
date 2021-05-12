@@ -42,21 +42,22 @@ export function modelHandler<UseModelReturns>({
     const props = !Object.keys(modelState.data.state).length 
       ? Object.freeze(_props)
       : localProps;
-    const stateData = useModel.call(null, { props, onChange }) as any;
-    if (!stateData.state) {
+    // localState：闭包中的本地state
+    const modelRuturns = useModel.call(null, { props, localState: copyState, onChange }) as any;
+    if (!modelRuturns.state) {
       console.warn("自定义model需要返回值对象中不存在state字段！");
       return;
     }
     if (!Object.keys(modelState.data.state).length) {
       localProps = props;
-      modelState.data = stateData;
-      copyState = { ...stateData.state };
-      modelState.data.state = stateData.state;
+      modelState.data = modelRuturns;
+      copyState = { ...modelRuturns.state };
+      modelState.data.state = modelRuturns.state;
       modelState.callbackLists = [];
     } else {
-      Object.keys(stateData).forEach((key) => {
-        if (key === "state") copyState = { ...stateData[key] };
-        modelState.data![key] = stateData[key];
+      Object.keys(modelRuturns).forEach((key) => {
+        if (key === "state") copyState = { ...modelRuturns[key] };
+        modelState.data![key] = modelRuturns[key];
       });
     }
     stateSetterHandler();
@@ -93,12 +94,12 @@ export function modelHandler<UseModelReturns>({
   };
 
   // 给useModel在修改state的时候调用的
-  function onChange(key: string, value: any) {
+  function onChange(key: string, value: any, params: any) {
     if (modelState.data.state.hasOwnProperty(key)) {
       setSetterEnable(true);
       modelState.data.state[key] = value;
     }
-    _onChange(modelState.callbackLists, key, value);
+    _onChange(modelState.callbackLists, key, value, params);
   }
 
   // state更新时setter的处理
