@@ -1,5 +1,5 @@
-import { ModelState, UseModel } from "./types/index";
-import { modelHandler } from "./utils/modelHandler";
+import { ModelState, UseModel } from "./_types/index";
+import { modelHandler } from "./handler/_index";
 
 /**
  * model包装器
@@ -10,7 +10,7 @@ export function createModel<Returns> (useModel: UseModel<Returns>) {
   let copyState: any = {}; // state备份
   const modelState: ModelState = {
     data: { state: {} },
-    callbackLists: [], // TODO: 重复注册的问题
+    callbackLists: [],
   };
   const handler = modelHandler<Returns>({ copyState, modelState, useModel });
 

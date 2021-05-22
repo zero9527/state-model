@@ -13,6 +13,8 @@
   
 自定义 `model` 的包装器
 
+限制(Typescript类型)自定义model返回值需要有 `state`，同时获取返回值，方便使用时候的取值类型推导
+
 ### `props`
 
 使用 `自定义Model` 时传入的外部参数
@@ -31,6 +33,9 @@ const countModel2 = useCountModel({ a: 'aaaa' });
   
 自定义 `model` 在 `setState` 的时候调用
 
+参数 `params`:
+- `{ key: string, value: any, params?: any }`
+
 > **仅允许**通过这种方式更新`state`，外部直接修改`state`无效
   
 
@@ -43,7 +48,7 @@ const countModel2 = useCountModel({ a: 'aaaa' });
 
 参数 `params`
 
-- callback: `(key: string, value: any): void;`
+- callback: `({ key: string, value: any, params?: any }): void;`
 - deps: `string[]`
 
 ```ts
@@ -51,7 +56,7 @@ const countModel = useCountModel();
 console.log(countModel.state.count); // 0
 
   // 调用下面 setCount 之后执行回调函数
-useCountModel.onStateChange((key, value) => {
+useCountModel.onStateChange(({ key, value }) => {
   console.log(key, value); // 'count', 6
 }, ['count']);
 
@@ -62,6 +67,8 @@ console.log(useCountModel.data.state.count); // 6
 
 
 ## 2、编写自定义 `Model`
+
+> **建议**将自定义model写在 `createModel` 里面，这样使用 `Typescript` 时回调函数会有类型; 见 `src/_example/useTestModel.ts`
 
 ```ts
 // __test/useCountModel.js

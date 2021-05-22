@@ -7,17 +7,17 @@ const countModel = useCountModel();
 const dateModel = useDateModel();
 
 // onStateChange
-useCountModel.onStateChange((key, value) => {
+useCountModel.onStateChange(({ key, value }) => {
   console.log(`useCountModel []`, key, value);
 }, []);
 
 // onStateChange
-useDateModel.onStateChange((key, value) => {
+useDateModel.onStateChange(({ key, value }) => {
   console.log(`useDateModel []`, key, value);
 }, []);
 
 // onStateChange
-useCountModel.onStateChange((key, value) => {
+useCountModel.onStateChange(({ key, value }) => {
   console.log(`useCountModel ['count']`, key, value);
   assert.strictEqual(key, 'count');
   assert.strictEqual(value, countModel.state.count);
@@ -30,7 +30,7 @@ useDateModel.onStateChange((key, value) => {
 }, ['date']);
 
 // onStateChange
-useDateModel.onStateChange((key, value) => {
+useDateModel.onStateChange(({ key, value }) => {
   // console.log(`useDateModel ['date']`, key, value);
   assert.strictEqual(key, 'date');
   assert.strictEqual(value, dateModel.state.date);

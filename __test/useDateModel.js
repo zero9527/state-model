@@ -13,7 +13,7 @@ function useDateModel({ onChange }) {
   };
 
   function setDate(date) {
-    onChange('date', date);
+    onChange({ key: 'date', value: date });
   }
 
   return {

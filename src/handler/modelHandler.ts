@@ -1,5 +1,5 @@
-import { onChange as _onChange } from "./onChange";
-import { CopyState, ModelHandler, ModelState, UseModel, OnChange } from "../types/index";
+import { changeHandler } from "./changeHandler";
+import { CopyState, ModelHandler, ModelState, UseModel, OnChange, OnChangeParams } from "../_types/index";
 
 /**
  * 数据处理逻辑
@@ -94,12 +94,12 @@ export function modelHandler<UseModelReturns>({
   };
 
   // 给useModel在修改state的时候调用的
-  function onChange(key: string, value: any, params: any) {
+  function onChange({ key, value, params }: OnChangeParams) {
     if (modelState.data.state.hasOwnProperty(key)) {
       setSetterEnable(true);
       modelState.data.state[key] = value;
     }
-    _onChange(modelState.callbackLists, key, value, params);
+    changeHandler(modelState.callbackLists, { key, value, params });
   }
 
   // state更新时setter的处理

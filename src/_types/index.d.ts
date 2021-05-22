@@ -2,15 +2,26 @@
  * 自定义Model
  */
  export interface UseModel<R> {
-  (props: any): R;
+  //  (props: any): R;
+  (props: { props: any, onChange: OnChange, localState: CopyState }): UseModelReturns & R;
 }
+
+/**
+ * 自定义model的返回值
+ */
+export type UseModelReturns = {
+  state: { [props: string]: any };
+};
 
 /**
  * 自定义model在setState调的辅助函数
  */
+// TODO：key 自动获取state下的属性
 export interface OnChange {
-  (params: { key: string, value: any, params: any }): void;
+  (params: { key: string, value: any, params?: any }): void;
 }
+
+export type OnChangeParams = Parameters<OnChange>[0];
 
 /**
  * stateChange 的回调函数相关
