@@ -7,7 +7,7 @@ const { createModel } = zrModel;
  * @param {*} param0 
  * @returns 
  */
-function useDateModel({ onChange }) {
+module.exports = createModel(function useDateModel({ onChange }) {
   const state = {
     date: new Date()
   };
@@ -20,6 +20,4 @@ function useDateModel({ onChange }) {
     state,
     setDate,
   };
-}
-
-module.exports = createModel(useDateModel);
+});

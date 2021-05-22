@@ -81,22 +81,23 @@ const { createModel } = zrModel;
  * @param {*} param0 
  * @returns 
  */
-function useCountModel({ props, onChange }) {
+
+module.exports = createModel(function useCountModel({ props, onChange }) {
   const state = {
     count: 0,
   };
 
-  function setCount(count) {
-    onChange('count', count);
+  console.log(props);
+
+  function setCount(newCount) {
+    onChange({ key: 'count', value: newCount  })
   }
 
   return {
     state,
     setCount,
   };
-}
-
-module.exports = createModel(useCountModel);
+});
 ```
 
 ## 3、使用自定义 `Model`
