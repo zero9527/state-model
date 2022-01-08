@@ -1,12 +1,12 @@
 {
-  "name": "@zr/model",
+  "name": "@zr/state-model",
   "version": "0.1.1",
-  "main": "dist/zr-model.esm.js",
-  "umd": "dist/zr-model.umd.js",
+  "main": "dist/state-model.esm.js",
+  "umd": "dist/state-model.umd.js",
   "typings": "typings/index.d.ts",
   "description": "A Single State Manage",
   "repository": {
-    "url": "https://github.com/zero9527/zr-model"
+    "url": "https://github.com/zero9527/state-model"
   },
   "scripts": {
     "build": "rollup -c",

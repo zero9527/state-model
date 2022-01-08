@@ -1,4 +1,4 @@
-# zr-model
+# state-model
 
 一个无框架依赖、非集中式的状态管理
 
@@ -6,14 +6,15 @@
 - 可以接收外部参数（仅第一次传入有效）
 - 状态**不需要**作为参数传递
 
-> 注：框架支持，可在编写`自定义Model`时，手动支持（见下文**Vue的响应式**支持）
+> 注：框架支持，可在编写`自定义Model`时，手动支持（见下文**Vue 的响应式**支持）
 
 ## 1、Api
+
 ### `createModel`
-  
+
 自定义 `model` 的包装器
 
-限制(Typescript类型)自定义model返回值需要有 `state`，同时获取返回值，方便使用时候的取值类型推导
+限制(Typescript 类型)自定义 model 返回值需要有 `state`，同时获取返回值，方便使用时候的取值类型推导
 
 ### `props`
 
@@ -30,21 +31,20 @@ const countModel2 = useCountModel({ a: 'aaaa' });
 ```
 
 ### `onChange`
-  
+
 自定义 `model` 在 `setState` 的时候调用
 
 参数 `params`:
+
 - `{ key: string, value: any, params?: any }`
 
 > **仅允许**通过这种方式更新`state`，外部直接修改`state`无效
-  
 
 ### `onStateChange` (beta)
-  
+
 自定义监听 `onChange` 的回调
 
 > 需要在自定义 `model` 内 `setState` 的时候调用一次 `onChange` 方法
-
 
 参数 `params`
 
@@ -55,31 +55,33 @@ const countModel2 = useCountModel({ a: 'aaaa' });
 const countModel = useCountModel();
 console.log(countModel.state.count); // 0
 
-  // 调用下面 setCount 之后执行回调函数
-useCountModel.onStateChange(({ key, value }) => {
-  console.log(key, value); // 'count', 6
-}, ['count']);
+// 调用下面 setCount 之后执行回调函数
+useCountModel.onStateChange(
+  ({ key, value }) => {
+    console.log(key, value); // 'count', 6
+  },
+  ['count']
+);
 
 countModel.setCount(6);
 console.log(countModel.state.count); // 6
 console.log(useCountModel.data.state.count); // 6
 ```
 
-
 ## 2、编写自定义 `Model`
 
-> **建议**将自定义model写在 `createModel` 里面，这样使用 `Typescript` 时回调函数会有类型; 见 `src/_example/useTestModel.ts`
+> **建议**将自定义 model 写在 `createModel` 里面，这样使用 `Typescript` 时回调函数会有类型; 见 `src/_example/useTestModel.ts`
 
 ```ts
 // __test/useCountModel.js
-const zrModel = require("../dist/zr-model.umd.js");
+const zrModel = require('../dist/state-model.umd.js');
 
 const { createModel } = zrModel;
 
 /**
  * useCountModel
- * @param {*} param0 
- * @returns 
+ * @param {*} param0
+ * @returns
  */
 
 module.exports = createModel(function useCountModel({ props, onChange }) {
@@ -90,7 +92,7 @@ module.exports = createModel(function useCountModel({ props, onChange }) {
   console.log(props);
 
   function setCount(newCount) {
-    onChange({ key: 'count', value: newCount  })
+    onChange({ key: 'count', value: newCount });
   }
 
   return {
@@ -121,7 +123,6 @@ console.log(testModel.state.count); // 6
 console.log(useTestModel.data.state.count); // 6
 ```
 
-
 ## 4、框架的响应式支持
 
 编写自定义`model`时候，使用**框架提供**的相应的响应式方法
@@ -129,12 +130,12 @@ console.log(useTestModel.data.state.count); // 6
 ### Vue 响应式支持
 
 - [`Vue2.6+`] [Vue.observable](https://cn.vuejs.org/v2/api/#Vue-observable)
-：让一个对象可响应。Vue 内部会用它来处理 data 函数返回的对象。
+  ：让一个对象可响应。Vue 内部会用它来处理 data 函数返回的对象。
 
 - [`Vue3.x+`] [Vue.reactive](https://v3.cn.vuejs.org/api/basic-reactivity.html#reactive)：返回对象的响应式副本
 
-
 例：
+
 ```js
 function useCountModel({ onChange }) {
   const state = {
@@ -156,15 +157,17 @@ function useCountModel({ onChange }) {
 ```
 
 ### React 响应式支持
-> TODO，不清楚有没有类似上面Vue的外部响应式支持。。。
+
+> TODO，不清楚有没有类似上面 Vue 的外部响应式支持。。。
 
 ### 其他
-> TODO，不清楚有没有类似上面Vue的外部响应式支持。。。
 
+> TODO，不清楚有没有类似上面 Vue 的外部响应式支持。。。
 
 ## 5、参考
+
 - [hox.js](https://github.com/umijs/hox): 基于 `React Hooks` 状态管理器
 
-
 ## 6、最后
+
 项目基于 [rollup-starter-lib](https://github.com/rollup/rollup-starter-lib) 创建

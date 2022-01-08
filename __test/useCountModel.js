@@ -1,4 +1,4 @@
-const zrModel = require("../dist/zr-model.umd.js");
+const zrModel = require("../dist/state-model.umd.js");
 
 const { createModel } = zrModel;
 
